@@ -1,0 +1,144 @@
+====================================================
+POWER BI DAX MEASURES FOR SUPPLY CHAIN ANALYTICS
+====================================================
+====================================================
+TABLE: Cost of Poor Quality Cleaned
+====================================================
+
+Total Rework Cost =
+SUM('Cost of Poor Quality Cleaned'[Rework Cost])
+
+Total Scrap Cost =
+SUM('Cost of Poor Quality Cleaned'[Scrap Cost])
+
+Total Warranty Cost =
+SUM('Cost of Poor Quality Cleaned'[Warranty Cost])
+
+Total COPQ =
+SUM('Cost of Poor Quality Cleaned'[Total COPQ])
+
+Average COPQ per Product =
+AVERAGE('Cost of Poor Quality Cleaned'[Total COPQ])
+
+====================================================
+TABLE: Inventory Data Cleaned
+====================================================
+
+Total On-hand Inventory =
+SUM('Inventory Data Cleaned'[On-hand Inventory])
+
+Total Safety Stock =
+SUM('Inventory Data Cleaned'[Safety Stock])
+
+Total Cycle Stock =
+SUM('Inventory Data Cleaned'[Cycle Stock])
+
+Total Blocked Stock =
+SUM('Inventory Data Cleaned'[Blocked Stock])
+
+Inventory Gap =
+SUM('Inventory Data Cleaned'[On-hand Inventory]) -
+SUM('Inventory Data Cleaned'[Safety Stock])
+
+Blocked Stock Percentage =
+AVERAGE('Inventory Data Cleaned'[Blocked Stock Percentage])
+
+Inventory at Risk Count =
+COUNTROWS(
+    FILTER(
+        'Inventory Data Cleaned',
+        'Inventory Data Cleaned'[Inventory Risk] = "High"
+    )
+)
+
+Inventory Health Ratio (IHR) =
+DIVIDE(
+    SUM('Inventory Data Cleaned'[On-hand Inventory]),
+    SUM('Inventory Data Cleaned'[Planned Index]),
+    0
+)
+
+====================================================
+TABLE: Quality PPAP Cleaned
+====================================================
+
+Total Defect Count =
+SUM('Quality PPAP Cleaned'[Defect Count])
+
+PPAP Approved Count =
+COUNTROWS(
+    FILTER(
+        'Quality PPAP Cleaned',
+        'Quality PPAP Cleaned'[PPAP Approval Status] = "Approved"
+    )
+)
+
+PPAP Rejected Count =
+COUNTROWS(
+    FILTER(
+        'Quality PPAP Cleaned',
+        'Quality PPAP Cleaned'[PPAP Approval Status] = "Rejected"
+    )
+)
+
+PPAP Approval Rate (%) =
+DIVIDE(
+    [PPAP Approved Count],
+    COUNTROWS('Quality PPAP Cleaned'),
+    0
+) * 100
+
+====================================================
+TABLE: SIOP Plan Cleaned
+====================================================
+
+Total Forecast Demand =
+SUM('SIOP Plan Cleaned'[Forecast Demand])
+
+Total Production Plan =
+SUM('SIOP Plan Cleaned'[Production Plan])
+
+Total Actual Sales =
+SUM('SIOP Plan Cleaned'[Actual Sales])
+
+Average Forecast Accuracy (%) =
+AVERAGE('SIOP Plan Cleaned'[Forecast Accuracy])
+
+Demand vs Production Gap =
+SUM('SIOP Plan Cleaned'[Forecast Demand]) -
+SUM('SIOP Plan Cleaned'[Production Plan])
+
+Sales Achievement (%) =
+DIVIDE(
+    SUM('SIOP Plan Cleaned'[Actual Sales]),
+    SUM('SIOP Plan Cleaned'[Forecast Demand]),
+    0
+) * 100
+
+====================================================
+TABLE: Supplier Performance Cleaned
+====================================================
+
+Average On-time Delivery (%) =
+AVERAGE('Supplier Performance Cleaned'[On-time Delivery])
+
+Average Quality Score =
+AVERAGE('Supplier Performance Cleaned'[Quality Score])
+
+Average Rejection Rate (%) =
+AVERAGE('Supplier Performance Cleaned'[Rejection Rate])
+
+Supplier Quality Score (Avg) =
+AVERAGE('Supplier Performance Cleaned'[Supplier Quality Score])
+
+High Risk Suppliers Count =
+COUNTROWS(
+    FILTER(
+        'Supplier Performance Cleaned',
+        'Supplier Performance Cleaned'[Supplier Quality Score] < 70
+    )
+)
+
+====================================================
+END OF DAX MEASURES
+====================================================
